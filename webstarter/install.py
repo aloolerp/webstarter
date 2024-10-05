@@ -7,14 +7,13 @@ def after_install():
     # Create "Front User" role and assign permissions
     create_front_user_role()
     assign_front_user_permissions()
-   
-    
     set_default_web_settings()
-
+    
+    
 def assign_guest_permissions():
     """Assign read permissions to Guest role for specific doctypes."""
     guest_role = "Guest"
-    guest_doctypes = ["Blog Post", "Blog Category", "Blog Settings", "Blogger", "Web Page","Web Settings"]
+    guest_doctypes = ["Blog Post", "Blog Category", "Blog Settings", "Blogger", "Web Page", "Web Settings"]
     
     for doctype in guest_doctypes:
         add_permission_if_not_exists(doctype, guest_role, {"read": 1})
@@ -41,17 +40,16 @@ def assign_front_user_permissions():
                 "delete": 1
             })
 
-def add_permission_if_not_exists(doctype, role, permissions):
-    """Add permissions to a role if they do not already exist."""
-    # Check if any of the permissions already exist
-    existing_permission = frappe.get_all("Custom DocPerm", filters={
+def add_permission_if_not_exists(doctype, role, new_permissions):
+    """Add permissions to a role if they do not already exist without removing existing permissions."""
+    existing_perms = frappe.get_all("Custom DocPerm", filters={
         "parent": doctype,
         "role": role,
         "permlevel": 0
-    }, fields=["name"])
+    }, fields=["name", "read", "write", "create", "delete"])
 
-    if not existing_permission:
-        # Create a new Custom DocPerm with the given permissions
+    # If no permissions exist, add new ones
+    if not existing_perms:
         docperm = frappe.get_doc({
             "doctype": "Custom DocPerm",
             "parent": doctype,
@@ -59,9 +57,18 @@ def add_permission_if_not_exists(doctype, role, permissions):
             "parentfield": "permissions",
             "role": role,
             "permlevel": 0,
-            **permissions
+            **new_permissions
         })
         docperm.insert()
+    else:
+        # Update existing permissions without removing the current ones
+        for perm in existing_perms:
+            docperm = frappe.get_doc("Custom DocPerm", perm["name"])
+            for perm_type, value in new_permissions.items():
+                if value and not docperm.get(perm_type):
+                    docperm.set(perm_type, 1)
+            docperm.save()
+
 
 def set_default_web_settings():
     """Set default values for Web Settings after installation."""
@@ -74,14 +81,16 @@ def set_default_web_settings():
         web_settings.set("top_bar_items", [])
         web_settings.set("footer_items", [])
         web_settings.set("block_settings", [])
+        web_settings.set("front_setup", [])
 
         # Define the default values
         default_items = [
             {"label": "Home", "url": "/home", "parent_label": ""},
             {"label": "Services", "url": "/services", "parent_label": ""},
             {"label": "Blogs", "url": "/blogs", "parent_label": ""},
-            {"label": "About", "url": "/about", "parent_label": ""},
-            {"label": "Contact", "url": "/contact", "parent_label": ""},
+            {"label": "Company", "url": "", "parent_label": ""},
+            {"label": "About", "url": "/about", "parent_label": "Company"},
+            {"label": "Contact", "url": "/contact", "parent_label": "Company"},
         ]
 
         footer_items = [
@@ -98,6 +107,10 @@ def set_default_web_settings():
             {"app_name": "webstarter", "app_path": "web/src/components"},
            
         ]
+        front_setup = [
+            {"app_name": "webstarter", "app_path": "web", "title": ".env", "extension": "local",
+             "template": "VITE_SOCKET_PORT=9000 VITE_SITE_NAME='alooldevs"},
+        ]
         
         # Insert default items into top_bar_items child table
         for item in default_items:
@@ -108,6 +121,9 @@ def set_default_web_settings():
         
         for item in block_settings:
             web_settings.append("block_settings", item)
+
+        for item in front_setup:
+            web_settings.append("front_setup", item)
 
         # Save the document with the new values
         web_settings.save()
