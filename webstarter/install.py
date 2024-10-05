@@ -1,5 +1,5 @@
 import frappe
-from webstarter.config.webstarter_workspaces import create_webstarter_workspace
+
 def after_install():
     # Assign permissions to Guest role
     assign_guest_permissions()
@@ -7,8 +7,8 @@ def after_install():
     # Create "Front User" role and assign permissions
     create_front_user_role()
     assign_front_user_permissions()
-    # Add workspace creation to the after_install function
-    create_webstarter_workspace()
+   
+    
     set_default_web_settings()
 
 def assign_guest_permissions():
