@@ -226,4 +226,48 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+# Add workspace creation to the after_install function
 
+fixtures = [
+    "Custom Field"
+]
+
+after_install = "webstarter.install.after_install"
+
+
+
+home_page = "web/"
+
+website_redirects = [
+    {"source": "/", "target": "/web"},
+    {"source": "/index", "target": "/home"},
+    {"source": "/home", "target": "/web/home"},
+    {"source": "/contact", "target": "/web/contact"},
+    {"source": "/projects", "target": "/web/projects"},
+    {"source": "/services", "target": "/web/services"},
+    {"source": "/about", "target": "/web/about"},
+    {"source": "/blog", "target": "/web/blogs"},
+    {"source": "/news", "target": "/web/news"},
+    {"source": "/faq", "target": "/web/faq"},
+    {"source": "/jobs", "target": "/web/careers"},
+    {"source": "/jobs", "target": "/web/jobs"},
+    {"source": "/terms", "target": "/web/terms"},
+    {"source": "/privacy", "target": "/web/privacy"},
+    {"source": "/cookie-policy", "target": "/web/cookie-policy"},
+    {"source": "/sitemap", "target": "/web/sitemap"},
+    {"source": "/terms-and-conditions", "target": "/web/terms-and-conditions"},
+    {"source": "/404", "target": "/notfound"},
+   
+    
+]
+
+
+
+doc_events = {
+    "User": {
+        "before_insert": "webstarter.webstarter.api.set_default_password_and_role"
+    }
+}
+
+
+website_route_rules = [{'from_route': '/web/<path:app_path>', 'to_route': 'web'},]
