@@ -232,7 +232,7 @@ fixtures = [
     "Custom Field"
 ]
 
-after_app_install = "webstarter.install.after_install"
+after_install = "webstarter.install.after_install"
 
 
 
