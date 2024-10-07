@@ -1,49 +1,44 @@
-// src/components/dashboard/Header.tsx
+// Header.tsx
 
-
-import { Search, Bell, CircleUser, Menu } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import {ModeToggle} from "@/utils/ModeToggle";
-import Notifications from "./Notifications";
+import { Menu, } from "lucide-react";
+import HeaderItems from "./HeaderItems";
 
-const Header = () => {
+const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+  const location = useLocation();
+
   return (
-    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-      <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-        <Menu className="h-5 w-5" />
-        <span className="sr-only">Toggle sidebar</span>
-      </Button>
-      <form className="flex-1">
-        <div className="relative">
+    <header className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center space-x-4">
+        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+          <Menu className="w-6 h-6" />
+        </Button>
+
+        {/* Breadcrumb */}
+        <nav className="flex">
+          <ol className="flex items-center space-x-2">
+            <li>
+              <Link to="/dashboard" className="text-muted-foreground">
+                Dashboard
+              </Link>
+            </li>
+            <li>/</li>
+            <li>{location.pathname.split("/").pop()}</li>
+          </ol>
+        </nav>
+      </div>
+
+      {/* Group search, notifications, mode toggle, and user menu */}
+      <div className="flex items-center space-x-4">
+        {/* Search */}
+        {/* <div className="relative">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." className="pl-8 sm:w-[300px]" />
-        </div>
-      </form>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="h-10 w-10">
-            <Bell className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <Notifications />
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <ModeToggle />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <CircleUser className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuItem>Logout</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <Input type="search" placeholder="Search..." className="pl-8 w-[200px] lg:w-[300px]" />
+        </div> */}
+
+       <HeaderItems />
+      </div>
     </header>
   );
 };

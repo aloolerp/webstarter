@@ -45,9 +45,9 @@ const DynamicPage: React.FC = () => {
     return (
       <div className="py-10">
       {/* Skeletons for the loading state */}
-      <Skeleton className="h-8 w-full mb-4" /> {/* Title placeholder */}
-      <Skeleton className="h-4 w-3/4 mb-6" /> {/* Subtitle placeholder */}
-      <Skeleton className="h-64 w-full" /> {/* Main content placeholder */}
+      {/* <Skeleton className="h-8 w-full mb-4" /> 
+      <Skeleton className="h-4 w-3/4 mb-6" /> 
+      <Skeleton className="h-64 w-full" />  */}
     </div>
     );
   }
@@ -124,7 +124,7 @@ const DynamicPage: React.FC = () => {
 
           // Render the component with the parsed values
           return (
-            <Suspense fallback={<div>Loading...</div>} key={block.name}>
+            <Suspense fallback={<div></div>} key={block.name}>
               <div className={classes} style={inlineStyles}>
                 <DynamicComponent {...parsedWebTemplateValues} />
               </div>

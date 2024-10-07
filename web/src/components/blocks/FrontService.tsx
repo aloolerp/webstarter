@@ -19,7 +19,7 @@ const FrontService = () => {
                     add_sort={true}
                     filters={[
                         { search_field: 'header', type: 'Data' },
-                        { search_field: 'subtitle', type: 'Data' },
+                        // { search_field: 'subtitle', type: 'Data' },
                         { search_field: 'category', type: 'Select', options: 'Web Development,Design,Consulting' },
                       
                     ]}

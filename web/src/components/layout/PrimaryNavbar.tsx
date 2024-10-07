@@ -21,6 +21,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import HeaderItems from "../dashboard/HeaderItems";
+import { Zap } from "lucide-react";
 
 const NavLink = ({ href, children, isActive, className }) => {
   const navigate = useNavigate();
@@ -92,8 +93,9 @@ export function PrimaryNavbar() {
       <div className="flex justify-between w-full">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
+          <Zap className="w-8 h-8 text-primary" />
             {data?.app_logo && (
-              <img src={data.app_logo} alt={data.app_name || "Logo"} className="h-16 w-24 " />
+              <img src={data.app_logo} alt={data.app_name ||  ""} className="h-16 w-24 " />
             )}
             <span className="text-xl font-bold">{data?.app_name }</span>
           </div>
@@ -153,18 +155,19 @@ export function PrimaryNavbar() {
               })}
             </NavigationMenuList>
           </NavigationMenu>
+         
         </nav>
 
-        
+        <div className=""><HeaderItems /></div>
 
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
+            <Button variant="ghost" size="icon" className="lg:hidden">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="overflow-y-auto">
+          <SheetContent side="right" className="overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2">
                 {data?.app_logo && (
@@ -173,6 +176,7 @@ export function PrimaryNavbar() {
                 <span className="text-xl font-bold">{data?.app_name }</span>
               </div>
             </div>
+            
             <div className="flex flex-col gap-4">
               {Object.keys(groupedLinks).map((key) => {
                 const group = groupedLinks[key];
@@ -202,14 +206,11 @@ export function PrimaryNavbar() {
                 }
               })}
             </div>
-           
+            
           </SheetContent>
         </Sheet>
-
-        <div className="ml-auto">
-          <HeaderItems />
-         
-        </div>
+        
+       
       </div>
     </header>
   );

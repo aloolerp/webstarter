@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useFrappeGetDocList } from 'frappe-react-sdk';
-
+import { Link } from 'react-router-dom';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
 
 interface TabProject {
   [key: string]: any;  // Making the fields dynamic
 }
 
 interface ProjectTabsProps {
+  doctype: string;  // The dynamic doctype to fetch data from
   header?: string;
   subtitle?: string;
-  doctype: string;  // The dynamic doctype to fetch data from
+  route?: string;
   fields: Array<{
     fieldname: string;
     type: 'Title' | 'Content' | 'Image';  // Field type to identify how to render
   }>;
 }
 
-const TabsSection = ({ header, subtitle, doctype, fields }: ProjectTabsProps) => {
+const TabsSection = ({ doctype, header, subtitle, route, fields }: ProjectTabsProps) => {
   const [activeTab, setActiveTab] = useState(0);
   const [tabProjects, setTabProjects] = useState<TabProject[]>([]);
 
@@ -26,7 +28,7 @@ const TabsSection = ({ header, subtitle, doctype, fields }: ProjectTabsProps) =>
   // Fetch projects based on the provided dynamic doctype and fields
   const { data: projects, error: projectsError } = useFrappeGetDocList<TabProject>(doctype, {
     fields: ['name', ...fieldNames],  // Fetch all dynamic fields
-    filters: [['type', '=', 'Tabs']],  // Assuming 'type' field exists in the doctype
+    filters: [['tab', '=', 1]],  // Assuming 'tab' field exists in the doctype
   });
 
   useEffect(() => {
@@ -48,8 +50,6 @@ const TabsSection = ({ header, subtitle, doctype, fields }: ProjectTabsProps) =>
 
   return (
     <section className="relative py-8">
-     
-      
       <div className="container mx-auto px-4">
         <div className="max-w-xl mb-8">
           {header && <h2 className="text-3xl font-bold sm:text-4xl">{header}</h2>}
@@ -96,6 +96,14 @@ const TabsSection = ({ header, subtitle, doctype, fields }: ProjectTabsProps) =>
               )}
               {getFieldValue(currentProject, 'Content') && (
                 <p className="text-gray-300">{getFieldValue(currentProject, 'Content')}</p>
+              )}
+              {route && currentProject.name && (
+                <Link 
+                  to={`${route}/${currentProject.name}`}
+                  className="mt-4 inline-block  py-2 hover:text-primary transition-colors"
+                >
+                  View Project <ArrowRightIcon className="w-4 h-4 inline-block" />
+                </Link>
               )}
             </div>
           </div>

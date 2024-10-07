@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { CircleUser, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/utils/ModeToggle";
@@ -14,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useFrappeAuth } from 'frappe-react-sdk';
+import UserSettings from "./UserSettings";
 
 interface UserMenuItem {
   label: string;
@@ -22,7 +24,8 @@ interface UserMenuItem {
 
 const userMenuItems: UserMenuItem[] = [
   { label: "Dashboard", route: "/dashboard" },
-  { label: "Settings", route: "/usersettings" },
+  { label: "Website", route: "/" },
+  { label: "Settings", route: "settings" },
   { label: "Support", route: "/support" },
   { label: "Logout", route: "/login" },
 ];
@@ -30,6 +33,7 @@ const userMenuItems: UserMenuItem[] = [
 export function HeaderItems() {
   const navigate = useNavigate();
   const { currentUser, logout } = useFrappeAuth();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -40,18 +44,28 @@ export function HeaderItems() {
     }
   };
 
+  const handleMenuItemClick = (item: UserMenuItem) => {
+    if (item.label === "Logout") {
+      handleLogout();
+    } else if (item.label === "Settings") {
+      setIsSettingsOpen(true);
+    } else {
+      navigate(item.route);
+    }
+  };
+
   return (
     <div className="flex h-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-2">
       {currentUser ? (
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="ml-auto h-10 w-10">
+              <Button variant="ghost" size="icon" className="ml-auto h-10 w-10">
                 <Bell className="h-4 w-4" />
                 <span className="sr-only">Toggle notifications</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end ">
+            <DropdownMenuContent align="end">
               <Notifications />
             </DropdownMenuContent>
           </DropdownMenu>
@@ -69,13 +83,16 @@ export function HeaderItems() {
               {userMenuItems.map((item, index) => (
                 <DropdownMenuItem 
                   key={index} 
-                  onSelect={() => item.label === "Logout" ? handleLogout() : navigate(item.route)}
+                  onSelect={() => handleMenuItemClick(item)}
                 >
                   {item.label}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          {isSettingsOpen && (
+            <UserSettings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+          )}
         </>
       ) : (
         <>

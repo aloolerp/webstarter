@@ -6,38 +6,30 @@ import { ThemeProvider } from './utils/ThemeProvider';
 import NotFound from './pages/NotFound';
 import DynamicPage from './pages/DynamicPage';
 import Layout from './components/layout/Layout';
-
-
+import Dashboard from './components/dashboard/Dashboard';
+import { CurrentUserProvider } from './pages/CurrentUser';
 
 function App() {
   const routes = getRoutes();
 
   return (
-  
-    <FrappeProvider
-      siteName={import.meta.env.VITE_SITE_NAME} socketPort={import.meta.env.VITE_SOCKET_PORT}>
-
+    <FrappeProvider siteName={import.meta.env.VITE_SITE_NAME} socketPort={import.meta.env.VITE_SOCKET_PORT}>
+      <CurrentUserProvider> 
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <BrowserRouter basename={import.meta.env.VTE_BASE_PATH}>
-      <Layout>
-        <Routes>
-        {routes.map((route, index) => (
-          <Route key={index} path={route.path} element={<route.component />} />))}
-         
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="*" element={<NotFound />} />
-
-          <Route path="/:pageName" element={<DynamicPage />} />
-          
-          
-          
-          
-        </Routes>
-        </Layout>
-      </BrowserRouter>
+        <BrowserRouter basename={import.meta.env.VTE_BASE_PATH}>
+          <Routes>
+            <Route path="/dashboard/*" element={<Dashboard />} />
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={<Layout><route.component /></Layout>} />
+            ))}
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="*" element={<Layout><NotFound /></Layout>} />
+            <Route path="/:pageName" element={<Layout><DynamicPage /></Layout>} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
+      </CurrentUserProvider>
     </FrappeProvider>
-  
   );
 }
 

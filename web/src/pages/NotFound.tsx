@@ -22,13 +22,13 @@ const NotFound: React.FC<NotFoundProps> = ({
       <img
         src={imageSrc}
         alt="404 Not Found"
-        className="w-full max-w-md"
+        className="h-72 w-full max-w-md"
       />
       <h1 className="mt-6 text-2xl font-bold text-primary">{title}</h1>
       <p className="mt-2 text-muted-foreground">{description}</p>
       <Link
         to={linkTo}
-        className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-accent"
+        className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-accent hover:text-accent-foreground"
       >
         {linkText}
       </Link>
