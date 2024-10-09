@@ -5,23 +5,27 @@ import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
-// Define the Project interface
+// Update the Project interface
 interface Project {
   header: string;
   description: string;
   meta_image: string;
   route: string;
   remark: string;
+  category: string; // Add category field
 }
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState('All');
 
   const { data, error, isLoading } = useFrappeGetDocList('Front Project', {
     filters: [['published', '=', 1]],
-    fields: ['header', 'description', 'meta_image', 'route', 'remark'],
+    fields: ['header', 'description', 'meta_image', 'route', 'remark', 'category'], // Add category to fields
     orderBy: {
       field: 'creation',
       order: 'asc',
@@ -31,6 +35,9 @@ const Projects = () => {
   useEffect(() => {
     if (data) {
       setProjects(data as Project[]);
+      // Extract unique categories
+      const uniqueCategories = ['All', ...new Set(data.map((project: Project) => project.category))];
+      setCategories(uniqueCategories);
     }
     if (error) {
       console.error('Error fetching projects:', error);
@@ -41,12 +48,30 @@ const Projects = () => {
     setVisibleCount((prevCount) => prevCount + 6);
   };
 
+  const filteredProjects = activeCategory === 'All'
+    ? projects
+    : projects.filter(project => project.category === activeCategory);
+
   return (
     <div className="p-4">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Explore Our Projects</h1>
         <p className="text-base text-muted-foreground">Discover our latest and greatest projects. Innovative solutions for real-world challenges.</p>
       </div>
+
+      <Tabs defaultValue="All" className="mb-6">
+        <TabsList>
+          {categories.map(category => (
+            <TabsTrigger
+              key={category}
+              value={category}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {isLoading ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -56,7 +81,7 @@ const Projects = () => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.slice(0, visibleCount).map((project) => (
+          {filteredProjects.slice(0, visibleCount).map((project) => (
             <Card key={project.route} className="hover:shadow-lg transition-shadow">
               <CardHeader className="p-0">
                 <div className="relative pt-[60%] overflow-hidden rounded-t-lg">
@@ -83,7 +108,7 @@ const Projects = () => {
         </div>
       )}
 
-      {visibleCount < projects.length && !isLoading && (
+      {visibleCount < filteredProjects.length && !isLoading && (
         <div className="flex justify-center mt-6">
           <Button variant="outline" onClick={handleShowMore}>
             Show More
