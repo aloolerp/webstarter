@@ -9,7 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface AloolPage {
   doctype: string;
   name: string;
-
   header: string;
   description: string;
   meta_image: string;

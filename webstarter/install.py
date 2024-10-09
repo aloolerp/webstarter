@@ -13,7 +13,7 @@ def after_install():
 def assign_guest_permissions():
     """Assign read permissions to Guest role for specific doctypes."""
     guest_role = "Guest"
-    guest_doctypes = ["Blog Post", "Blog Category", "Blog Settings", "Blogger", "Web Page", "Web Settings"]
+    guest_doctypes = ["Blog Post", "Blog Category", "Blog Settings", "Blogger", "Web Page", "Front Page", "Web Settings"]
     
     for doctype in guest_doctypes:
         add_permission_if_not_exists(doctype, guest_role, {"read": 1})
