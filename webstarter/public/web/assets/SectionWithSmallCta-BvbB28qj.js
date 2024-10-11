@@ -1,0 +1,1 @@
+import{j as r,B as e}from"./index-BEnNszjz.js";const h=({title:i,subtitle:n,cta_label:s,cta_url:d})=>r.jsxs("div",{children:[i&&r.jsx("div",{children:r.jsx("p",{children:i})}),n&&r.jsx("div",{children:r.jsx("p",{children:n})}),d&&s&&r.jsx("a",{href:d,children:r.jsx(e,{variant:"default",children:s})})]});export{h as default};

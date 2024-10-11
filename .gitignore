@@ -6,5 +6,5 @@ tags
 node_modules
 __pycache__
 
-/webstarter/public/web
-/webstarter/www/web.html
+# /webstarter/public/web
+# /webstarter/www/web.html

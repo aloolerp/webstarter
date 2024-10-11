@@ -1,0 +1,1 @@
+import{j as s,U as a,V as n,Y as o}from"./index-BEnNszjz.js";const l=({content:e,align:r="left"})=>{const t=r==="center"?"text-center":r==="right"?"text-right":"text-left";return s.jsx("div",{className:`container mx-auto px-4 py-8 ${t}`,children:e&&s.jsx(a,{className:"prose dark:prose-dark",remarkPlugins:[n],rehypePlugins:[o],children:e})})};export{l as default};

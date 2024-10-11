@@ -1,0 +1,1 @@
+import{j as i}from"./index-BEnNszjz.js";const e=({logo:s,name:r,content:d})=>i.jsxs("div",{children:[s&&i.jsx("div",{children:i.jsx("img",{src:s,alt:"Logo"})}),r&&i.jsx("div",{children:i.jsx("p",{children:r})}),d&&i.jsx("div",{children:i.jsx("p",{children:d})})]});export{e as default};

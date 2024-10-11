@@ -232,14 +232,14 @@ fixtures = [
     "Custom Field"
 ]
 
-after_install = "webstarter.install.after_install"
+# after_install = "webstarter.install.after_install"
 
 
 
 home_page = "web/"
 
 website_redirects = [
-    {"source": "/", "target": "/web"},
+    {"source": "/", "target": "/home"},
     {"source": "/index", "target": "/home"},
     {"source": "/home", "target": "/web/home"},
     {"source": "/contact", "target": "/web/contact"},
