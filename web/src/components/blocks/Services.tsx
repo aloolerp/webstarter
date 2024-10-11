@@ -97,7 +97,7 @@ const Services: React.FC<ServicesProps> = ({ show_tabs, use_icons }) => {
           {filteredServices.slice(0, visibleCount).map((service) => (
             <Card key={service.route} className="hover:shadow-lg transition-shadow overflow-hidden">
               <CardHeader className="p-6">
-                {use_icons === '1' && service.icon ? (
+                {use_icons == '1' && service.icon ? (
                   <div className="flex flex-col items-left mb-2">
                     {React.createElement(
                       LucideIcons[service.icon as keyof typeof LucideIcons] || LucideIcons.HelpCircle,
