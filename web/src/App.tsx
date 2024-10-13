@@ -7,7 +7,7 @@ import NotFound from './pages/NotFound';
 import DynamicPage from './pages/DynamicPage';
 import Layout from './components/layout/Layout';
 import Dashboard from './components/dashboard/Dashboard';
-import { CurrentUserProvider } from './pages/CurrentUser';
+import { CurrentUserProvider } from './components/auth/CurrentUser';
 
 function App() {
   const routes = getRoutes();

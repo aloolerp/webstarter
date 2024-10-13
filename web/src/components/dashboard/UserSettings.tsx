@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, User, Paintbrush, Sliders, Mail, Camera } from 'lucide-react';
 import { useFrappeGetDoc } from 'frappe-react-sdk';
-import { useCurrentUser } from '@/pages/CurrentUser';
-import SetPasswordPage from '@/pages/SetPasswordPage';
+import { useCurrentUser } from '@/components/auth/CurrentUser';
+import SetPasswordPage from '@/components/auth/SetPasswordPage';
 
 const settingsItems = [
   { icon: User, label: 'Profile' },

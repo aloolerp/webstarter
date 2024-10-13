@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FrappeConfig, FrappeContext, useFrappeAuth } from "frappe-react-sdk";
 import { Link } from "react-router-dom";
-import GoogleSignIn from "@/pages/GoogleSignIn";
-import SetPassword from "@/pages/SetPassword";
+import GoogleSignIn from "@/components/auth/GoogleSignIn";
+import SetPassword from "@/components/auth/SetPassword";
 import { toast } from "@/hooks/use-toast";
 import { CurrentUserProvider, useCurrentUser } from './CurrentUser';
 
